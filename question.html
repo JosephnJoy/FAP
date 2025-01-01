@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>密碼挑戰</title>
+  <title>太空探險問題關卡</title>
   <style>
     body {
       text-align: center;
@@ -11,46 +11,17 @@
       background-color: #000;
       color: #fff;
     }
-    input {
-      padding: 10px;
-      font-size: 18px;
-      margin-top: 20px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 18px;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
+    /* 其他樣式 */
   </style>
 </head>
 <body>
-  <h1>密碼挑戰</h1>
-  <p>請輸入人類第一次登陸月球的年份：</p>
-  <input type="text" id="password" placeholder="例如：1969">
-  <br>
-  <button onclick="checkPassword()">提交</button>
-  <p id="message"></p>
+  <h1>這是問題關卡</h1>
+  <!-- 問題內容 -->
+  <button onclick="goToNextPage()">下一關</button>
 
   <script>
-    function checkPassword() {
-      const password = document.getElementById('password').value;
-      const message = document.getElementById('message');
-      if (password === "1969") {
-        window.location.href = "page3.html";
-      } else {
-        message.textContent = "密碼錯誤！請再試一次。";
-        message.style.color = "red";
-      }
+    function goToNextPage() {
+      window.location.href = "minigame.html";
     }
   </script>
 </body>
