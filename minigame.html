@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>太空航行</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      color: #fff;
+      margin: 0;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+      margin: 0 auto;
+      background: #111;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align: center; margin-top: 20px;">躲避隕石遊戲</h1>
+  <canvas id="gameCanvas" width="400" height="600"></canvas>
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // 玩家飛船
+    const ship = {
+      x: canvas.width / 2 - 20,
+      y: canvas.height - 60,
+      width: 40,
+      height: 40,
+      color: 'white',
+      speed: 5
+    };
+
+    // 隕石數組
+    const asteroids = [];
+    const asteroidSpeed = 3;
+    const asteroidSize = 30;
+
+    // 遊戲狀態
+    let gameRunning = true;
+
+    // 生成隕石
+    function spawnAsteroid() {
+      const x = Math.random() * (canvas.width - asteroidSize);
+      asteroids.push({ x, y: 0 });
+    }
+
+    // 移動隕石
+    function updateAsteroids() {
+      for (let i = 0; i < asteroids.length; i++) {
+        asteroids[i].y += asteroidSpeed;
+
+        // 檢測碰撞
+        if (
+          asteroids[i].x < ship.x + ship.width &&
+          asteroids[i].x + asteroidSize > ship.x &&
+          asteroids[i].y < ship.y + ship.height &&
+          asteroids[i].y + asteroidSize > ship.y
+        ) {
+          gameRunning = false;
+        }
+      }
+
+      // 移除超出畫布的隕石
+      while (asteroids.length > 0 && asteroids[0].y > canvas.height) {
+        asteroids.shift();
+      }
+    }
+
+    // 畫飛船
+    function drawShip() {
+      ctx.fillStyle = ship.color;
+      ctx.fillRect(ship.x, ship.y, ship.width, ship.height);
+    }
+
+    // 畫隕石
+    function drawAsteroids() {
+      ctx.fillStyle = 'gray';
+      for (let i = 0; i < asteroids.length; i++) {
+        ctx.fillRect(asteroids[i].x, asteroids[i].y, asteroidSize, asteroidSize);
+      }
+    }
+
+    // 更新遊戲
+    function update() {
+      if (!gameRunning) {
+        alert("恭喜你成功抵達月球！");
+        window.location.href = "success.html";
+        return;
+      }
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawShip();
+      drawAsteroids();
+      updateAsteroids();
+
+      requestAnimationFrame(update);
+    }
+
+    // 控制飛船
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft' && ship.x > 0) {
+        ship.x -= ship.speed;
+      } else if (e.key === 'ArrowRight' && ship.x < canvas.width - ship.width) {
+        ship.x += ship.speed;
+      }
+    });
+
+    // 初始化遊戲
+    setInterval(spawnAsteroid, 1000);
+    update();
+  </script>
+</body>
+</html>
